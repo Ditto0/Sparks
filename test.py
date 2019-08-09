@@ -1,6 +1,10 @@
 import pyspark
 from pyspark import SparkConf, SparkContext
-
+import sys
+import os
+os.environ['SPARK_HOME'] = "D:\spark-2.4.3-bin-hadoop2.7"
+sys.path.append("D:\spark-2.4.3-bin-hadoop2.7\python")
+sys.path.append("D:\spark-2.4.3-bin-hadoop2.7\python\lib")
 sc = pyspark.SparkContext( 'local', 'test')
 
 print(123455)

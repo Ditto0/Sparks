@@ -1,10 +1,16 @@
-import findspark
 import pyspark
-#可在环境变量中进行设置，即PATH中加入如下地址
-findspark.init("D:\spark-2.4.3-bin-hadoop2.7")
-from pyspark.sql import SparkSession
-from pyspark import SparkContext
-from pyspark import SparkConf
+from pyspark import SparkConf, SparkContext
+import sys
+import os
+os.environ['SPARK_HOME'] = "D:\spark-2.4.3-bin-hadoop2.7"
+sys.path.append("D:\spark-2.4.3-bin-hadoop2.7\python")
+sys.path.append("D:\spark-2.4.3-bin-hadoop2.7\python\lib")
+sc = pyspark.SparkContext( 'local', 'test')
 
-# 创建sc
-sc=SparkContext("local","Simple")
+print(123455)
+logFile = "E:/Python/Sparks/edd.txt"
+logData = sc.textFile(logFile, 2).cache()
+numAs = logData.filter(lambda line: 'a' in line).count()
+numBs = logData.filter(lambda line: 'b' in line).count()
+
+print('Lines with a: %s, Lines with b: %s' % (numAs, numBs))
