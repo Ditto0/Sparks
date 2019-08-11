@@ -1,16 +1,27 @@
-import pyspark
-from pyspark import SparkConf, SparkContext
-import sys
 import os
-os.environ['SPARK_HOME'] = "D:\spark-2.4.3-bin-hadoop2.7"
-sys.path.append("D:\spark-2.4.3-bin-hadoop2.7\python")
-sys.path.append("D:\spark-2.4.3-bin-hadoop2.7\python\lib")
-sc = pyspark.SparkContext( 'local', 'test')
+import shutil
+from pyspark import SparkContext
 
-print(123455)
-logFile = "E:/Python/Sparks/edd.txt"
-logData = sc.textFile(logFile, 2).cache()
-numAs = logData.filter(lambda line: 'a' in line).count()
-numBs = logData.filter(lambda line: 'b' in line).count()
 
-print('Lines with a: %s, Lines with b: %s' % (numAs, numBs))
+
+sc = SparkContext("local","PatRank")
+lines = sc.textFile("PAT.txt")
+
+r = lines.flatMap(lambda line:((line[0],line[1]),line[2])).reduceByKey(max)
+r.foreach(print)
+'''
+sc = SparkContext("local","wordcount")
+
+lines = sc.textFile("test.txt")
+con = lines.count()
+print(con)
+f = lines.collect()
+print(f)
+
+hellolines = lines.filter(lambda line: "hello" in line)
+hello_count = hellolines.first()
+print(hello_count)
+
+maxNum = lines.map(lambda line: len(line.split(" ")))
+maxNum.foreach(print)
+'''
